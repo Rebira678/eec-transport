@@ -137,11 +137,11 @@ export default function LoginPage() {
           <VStack spacing={1.5} align="stretch">
             {[
               { role: 'Admin', email: 'admin@eec.com', pw: 'Admin@123', color: 'purple' },
-              { role: 'Managing Director', email: 'md@eec.com', pw: 'Md@123', color: 'blue' },
-              { role: 'PPM Manager', email: 'ppm@eec.com', pw: 'Ppm@123', color: 'teal' },
-              { role: 'Sector Finance', email: 'finance@eec.com', pw: 'Finance@123', color: 'green' },
-              { role: 'Design Director', email: 'design@eec.com', pw: 'Design@123', color: 'orange' },
-              { role: 'Contract Admin Director', email: 'contract@eec.com', pw: 'Contract@123', color: 'red' },
+              { role: 'Transport Manager', email: 'manager@eec.com', pw: 'Manager@123', color: 'blue' },
+              { role: 'Planning Manager', email: 'planning@eec.com', pw: 'Plan@123', color: 'teal' },
+              { role: 'Project Manager', email: 'pm1@eec.com', pw: 'Pm1@123', color: 'orange' },
+              { role: 'Finance', email: 'finance@eec.com', pw: 'Finance@123', color: 'green' },
+              { role: 'Viewer', email: 'viewer@eec.com', pw: 'View@123', color: 'gray' },
             ].map(({ role, email, pw, color }) => (
               <Button
                 key={email}
