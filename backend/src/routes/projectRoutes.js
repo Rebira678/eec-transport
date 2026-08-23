@@ -2,8 +2,8 @@ const router = require('express').Router();
 const ctrl = require('../controllers/projectController');
 const { authenticate, authorize } = require('../middleware/auth');
 
-const ALL_ROLES   = ['ADMIN', 'MANAGING_DIRECTOR', 'PPM_MANAGER', 'SECTOR_FINANCE', 'DESIGN_DIRECTOR', 'CONTRACT_ADMIN_DIRECTOR'];
-const WRITE_ROLES = ['ADMIN', 'MANAGING_DIRECTOR', 'PPM_MANAGER'];
+const ALL_ROLES   = ['ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER', 'PROJECT_MANAGER', 'FINANCE', 'VIEWER'];
+const WRITE_ROLES = ['ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER', 'PROJECT_MANAGER'];
 
 router.use(authenticate);
 router.get('/',     authorize(...ALL_ROLES),   ctrl.getAll);

@@ -26,14 +26,14 @@ const User = sequelize.define('User', {
   role: {
     type: DataTypes.ENUM(
       'ADMIN',
-      'MANAGING_DIRECTOR',
-      'PPM_MANAGER',
-      'SECTOR_FINANCE',
-      'DESIGN_DIRECTOR',
-      'CONTRACT_ADMIN_DIRECTOR'
+      'TRANSPORT_MANAGER',
+      'PLANNING_MANAGER',
+      'PROJECT_MANAGER',
+      'FINANCE',
+      'VIEWER'
     ),
     allowNull: false,
-    defaultValue: 'PPM_MANAGER',
+    defaultValue: 'VIEWER',
   },
   is_active: {
     type: DataTypes.BOOLEAN,

@@ -7,9 +7,9 @@ const {
   recoveryController, forwardLookController, userController,
 } = require('../controllers/crudControllers');
 
-const ALL   = ['ADMIN', 'MANAGING_DIRECTOR', 'PPM_MANAGER', 'SECTOR_FINANCE', 'DESIGN_DIRECTOR', 'CONTRACT_ADMIN_DIRECTOR'];
-const WRITE = ['ADMIN', 'MANAGING_DIRECTOR', 'PPM_MANAGER'];
-const FIN   = ['ADMIN', 'MANAGING_DIRECTOR', 'PPM_MANAGER', 'SECTOR_FINANCE'];
+const ALL   = ['ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER', 'PROJECT_MANAGER', 'FINANCE', 'VIEWER'];
+const WRITE = ['ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER', 'PROJECT_MANAGER'];
+const FIN   = ['ADMIN', 'TRANSPORT_MANAGER', 'FINANCE'];
 const ADMIN = ['ADMIN'];
 
 // Helper to register standard CRUD routes on a router
@@ -66,7 +66,7 @@ router.use('/resources', resourceRouter);
 
 // Interventions
 const interventionRouter = require('express').Router();
-crudRoutes(interventionRouter, interventionController, ALL, ['ADMIN', 'MANAGING_DIRECTOR', 'PPM_MANAGER']);
+crudRoutes(interventionRouter, interventionController, ALL, ['ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER']);
 router.use('/interventions', interventionRouter);
 
 // Recovery Plans
