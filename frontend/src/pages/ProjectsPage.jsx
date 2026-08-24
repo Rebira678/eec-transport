@@ -54,7 +54,7 @@ export default function ProjectsPage() {
       <PageHeader
         title="Project Portfolio Register"
         subtitle={`${projects.length} projects in portfolio`}
-        actions={hasRole('ADMIN', 'MANAGING_DIRECTOR', 'PPM_MANAGER') && (
+        actions={hasRole('ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER', 'PROJECT_MANAGER') && (
           <Button leftIcon={<AddIcon />} colorScheme="blue" size="sm" onClick={() => nav('/projects/new')}>
             Add Project
           </Button>
@@ -162,7 +162,7 @@ export default function ProjectsPage() {
                     <Td px={3}><StatusBadge status={p.project_status} size="xs" /></Td>
                     <Td px={3}><HealthBadge status={p.health_status} /></Td>
                     <Td px={3}>
-                      {hasRole('ADMIN', 'MANAGING_DIRECTOR', 'PPM_MANAGER') && (
+                      {hasRole('ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER', 'PROJECT_MANAGER') && (
                         <Button size="xs" variant="ghost" colorScheme="blue"
                           onClick={e => { e.stopPropagation(); nav(`/projects/${p.id}/edit`); }}>
                           Edit

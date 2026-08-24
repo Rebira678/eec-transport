@@ -6,8 +6,8 @@ module.exports = {
   getById:  makeController((req) => projectService.getById(req.params.id, req.user?.role)),
   create:   makeController((req) => projectService.create(req.body)),
   update:   makeController((req) => projectService.update(req.params.id, req.body)),
-  remove:   makeController(async (req, res) => {
+  remove:   makeController(async (req) => {
     await projectService.remove(req.params.id);
-    res.json({ success: true, message: 'Project deleted.' });
+    return { message: 'Project deleted.' };
   }),
 };

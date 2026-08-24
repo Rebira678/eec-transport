@@ -11,9 +11,9 @@ const makeCrud = (svc, projectIdFromParam = false) => ({
   getById: makeController((req) => svc.getById(req.params.id, req.user?.role)),
   create:  makeController((req) => svc.create(req.body)),
   update:  makeController((req) => svc.update(req.params.id, req.body)),
-  remove:  makeController(async (req, res) => {
+  remove:  makeController(async (req) => {
     await svc.remove(req.params.id);
-    res.json({ success: true, message: 'Record deleted.' });
+    return { message: 'Record deleted.' };
   }),
 });
 
@@ -33,9 +33,9 @@ module.exports = {
     getAll:  makeController(() => userService.getAll()),
     getById: makeController((req) => userService.getById(req.params.id)),
     update:  makeController((req) => userService.update(req.params.id, req.body)),
-    remove:  makeController(async (req, res) => {
+    remove:  makeController(async (req) => {
       await userService.remove(req.params.id);
-      res.json({ success: true, message: 'User deleted.' });
+      return { message: 'User deleted.' };
     }),
   },
 };

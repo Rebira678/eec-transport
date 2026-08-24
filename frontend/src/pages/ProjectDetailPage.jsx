@@ -233,7 +233,7 @@ export default function ProjectDetailPage() {
         actions={
           <HStack spacing={2}>
             <HealthBadge status={project.health_status} />
-            {hasRole('ADMIN', 'PLANNING_MANAGER') && (
+            {hasRole('ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER', 'PROJECT_MANAGER') && (
               <Button leftIcon={<EditIcon />} size="sm" variant="outline" colorScheme="blue"
                 onClick={() => nav(`/projects/${id}/edit`)}>
                 Edit Project

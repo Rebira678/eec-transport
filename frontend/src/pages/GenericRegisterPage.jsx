@@ -395,7 +395,7 @@ export default function GenericRegisterPage({ registerType }) {
         title={registerType === 'resources' && resourceTypeFilter ? `${resourceTypeFilter.replace(/_/g, ' ')} Register` : config.title}
         subtitle={`${filteredItems.length} records in register`}
         actions={
-          hasRole('ADMIN', 'PLANNING_MANAGER', 'PROJECT_MANAGER', 'FINANCE') && (
+          hasRole('ADMIN', 'TRANSPORT_MANAGER', 'PLANNING_MANAGER', 'PROJECT_MANAGER', 'FINANCE') && (
             <Button leftIcon={<AddIcon />} colorScheme="blue" size="sm" onClick={handleOpenAdd}>
               Add Record
             </Button>

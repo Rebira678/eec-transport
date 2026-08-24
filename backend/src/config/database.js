@@ -17,6 +17,12 @@ const sequelize = isSqlite
   : new Sequelize(config.databaseUrl, {
       dialect: 'postgres',
       logging: false,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
       pool: {
         max: 5,
         min: 0,
