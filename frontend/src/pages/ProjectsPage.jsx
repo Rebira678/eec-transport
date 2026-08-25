@@ -168,6 +168,22 @@ export default function ProjectsPage() {
                           Edit
                         </Button>
                       )}
+                      {hasRole('ADMIN') && (
+                        <Button size="xs" variant="ghost" colorScheme="red" ml={1}
+                          onClick={async e => { 
+                            e.stopPropagation(); 
+                            if(window.confirm('Are you sure you want to delete this project? This will delete all related records (risks, issues, progress).')) {
+                              try {
+                                await projectService.remove(p.id);
+                                load();
+                              } catch(err) {
+                                alert(err?.response?.data?.message || err.message);
+                              }
+                            }
+                          }}>
+                          Delete
+                        </Button>
+                      )}
                     </Td>
                   </Tr>
                 ))}

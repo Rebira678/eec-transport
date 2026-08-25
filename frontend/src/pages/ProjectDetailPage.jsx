@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { EditIcon } from '@chakra-ui/icons';
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useForm } from 'react-hook-form';
 import {
   projectService, progressService, milestoneService, deliverableService,
@@ -237,6 +237,21 @@ export default function ProjectDetailPage() {
               <Button leftIcon={<EditIcon />} size="sm" variant="outline" colorScheme="blue"
                 onClick={() => nav(`/projects/${id}/edit`)}>
                 Edit Project
+              </Button>
+            )}
+            {hasRole('ADMIN') && (
+              <Button leftIcon={<DeleteIcon />} size="sm" variant="outline" colorScheme="red"
+                onClick={async () => {
+                  if(window.confirm('Are you sure you want to delete this project? All associated data will be lost.')) {
+                    try {
+                      await projectService.remove(id);
+                      nav('/projects');
+                    } catch(err) {
+                      alert(err?.response?.data?.message || err.message);
+                    }
+                  }
+                }}>
+                Delete Project
               </Button>
             )}
             <Button size="sm" variant="ghost" colorScheme="gray" onClick={() => nav('/projects')}>

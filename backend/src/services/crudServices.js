@@ -21,30 +21,6 @@ const getProjectInclude = (userRole) => {
 // ─── PROGRESS ─────────────────────────────────────────────────────────────────
 const progressService = {
   getAll: async (projectId, userRole = null) => {
-    // Ensure all projects have at least a baseline progress entry so they are immediately visible and searchable
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name', 'commencement_date'] });
-      for (const proj of allProjects) {
-        const count = await ProjectProgress.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          const today = new Date();
-          const dateStr = proj.commencement_date || `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`;
-          await ProjectProgress.create({
-            project_id: proj.id,
-            reporting_month: dateStr,
-            planned_progress: 0,
-            actual_progress: 0,
-            schedule_variance: 0,
-            spi: 1.0,
-            time_elapsed_percent: 0,
-            time_remaining_percent: 100,
-            notes: 'Initial project baseline',
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline progress records:', e.message);
-    }
 
     return ProjectProgress.findAll({
       where: projectId ? { project_id: projectId } : {},
@@ -86,22 +62,6 @@ const progressService = {
 // ─── CONTRACTS ────────────────────────────────────────────────────────────────
 const contractService = {
   getAll: async (projectId, userRole = null) => {
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name'] });
-      for (const proj of allProjects) {
-        const count = await Contract.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          await Contract.create({
-            project_id: proj.id,
-            contract_no: `${proj.project_code || 'PRJ'}-CONT-01`,
-            contract_title: `Main Contract for ${proj.project_name || 'Project'}`,
-            original_contract_value: 0,
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline contracts:', e.message);
-    }
     return Contract.findAll({
       where: projectId ? { project_id: projectId } : {},
       include: [getProjectInclude(userRole)],
@@ -136,27 +96,6 @@ const contractService = {
 // ─── MILESTONES ───────────────────────────────────────────────────────────────
 const milestoneService = {
   getAll: async (projectId, userRole = null) => {
-    // Ensure all projects have at least a baseline kickoff milestone
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name', 'commencement_date'] });
-      for (const proj of allProjects) {
-        const count = await Milestone.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          const today = new Date();
-          const dateStr = proj.commencement_date || `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`;
-          await Milestone.create({
-            project_id: proj.id,
-            name: 'Project Commencement / Kickoff',
-            planned_date: dateStr,
-            status: 'IN_PROGRESS',
-            is_critical: true,
-            notes: 'Project commencement milestone',
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline milestones:', e.message);
-    }
 
     return Milestone.findAll({
       where: projectId ? { project_id: projectId } : {},
@@ -185,27 +124,6 @@ const milestoneService = {
 // ─── DELIVERABLES ─────────────────────────────────────────────────────────────
 const deliverableService = {
   getAll: async (projectId, userRole = null) => {
-    // Ensure all projects have at least a baseline deliverable
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name', 'commencement_date'] });
-      for (const proj of allProjects) {
-        const count = await Deliverable.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          const today = new Date();
-          const dateStr = proj.commencement_date || `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`;
-          await Deliverable.create({
-            project_id: proj.id,
-            name: 'Initial Project Report',
-            category: 'REPORT',
-            planned_date: dateStr,
-            status: 'PLANNED',
-            description: 'Baseline deliverable',
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline deliverables:', e.message);
-    }
 
     return Deliverable.findAll({
       where: projectId ? { project_id: projectId } : {},
@@ -234,34 +152,6 @@ const deliverableService = {
 // ─── FINANCIALS ───────────────────────────────────────────────────────────────
 const financialService = {
   getAll: async (projectId, userRole = null) => {
-    // Ensure all projects have at least a baseline financial record
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name', 'commencement_date', 'contract_value'] });
-      for (const proj of allProjects) {
-        const count = await FinancialRecord.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          const today = new Date();
-          const dateStr = proj.commencement_date || `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`;
-          await FinancialRecord.create({
-            project_id: proj.id,
-            reporting_month: dateStr,
-            original_contract_value: proj.contract_value || 0,
-            revised_contract_value: proj.contract_value || 0,
-            variation_value: 0,
-            planned_invoicing: 0,
-            actual_invoicing: 0,
-            amount_certified: 0,
-            amount_received: 0,
-            outstanding_payment: 0,
-            planned_cost: 0,
-            actual_cost: 0,
-            forecast_cost: 0,
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline financial records:', e.message);
-    }
 
     return FinancialRecord.findAll({
       where: projectId ? { project_id: projectId } : {},
@@ -297,24 +187,6 @@ const financialService = {
 // ─── RISKS ────────────────────────────────────────────────────────────────────
 const riskService = {
   getAll: async (projectId, userRole = null) => {
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name'] });
-      for (const proj of allProjects) {
-        const count = await Risk.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          await Risk.create({
-            project_id: proj.id,
-            risk_code: `${proj.project_code || 'PRJ'}-RSK-01`,
-            description: 'Baseline project execution risk',
-            probability: 'LOW',
-            impact: 'LOW',
-            status: 'CLOSED'
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline risks:', e.message);
-    }
     return Risk.findAll({
       where: projectId ? { project_id: projectId } : {},
       include: [getProjectInclude(userRole)],
@@ -349,23 +221,6 @@ const riskService = {
 // ─── ISSUES ───────────────────────────────────────────────────────────────────
 const issueService = {
   getAll: async (projectId, userRole = null) => {
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name'] });
-      for (const proj of allProjects) {
-        const count = await Issue.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          await Issue.create({
-            project_id: proj.id,
-            issue_code: `${proj.project_code || 'PRJ'}-ISS-01`,
-            description: 'Baseline issue record (placeholder)',
-            severity: 'LOW',
-            status: 'CLOSED'
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline issues:', e.message);
-    }
     return Issue.findAll({
       where: projectId ? { project_id: projectId } : {},
       include: [getProjectInclude(userRole)],
@@ -393,29 +248,6 @@ const issueService = {
 // ─── RESOURCES ────────────────────────────────────────────────────────────────
 const resourceService = {
   getAll: async (projectId, userRole = null) => {
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name'] });
-      const types = ['HUMAN_RESOURCE', 'VEHICLE', 'EQUIPMENT'];
-      for (const proj of allProjects) {
-        for (const rType of types) {
-          const count = await Resource.count({ where: { project_id: proj.id, resource_type: rType } });
-          if (count === 0) {
-            await Resource.create({
-              project_id: proj.id,
-              resource_type: rType,
-              resource_name: `Baseline ${rType.replace('_', ' ')}`,
-              required_quantity: 0,
-              available_quantity: 0,
-              operational_quantity: 0,
-              shortfall: 0,
-              notes: 'System generated baseline',
-            }).catch(() => {});
-          }
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline resources:', e.message);
-    }
 
     return Resource.findAll({
       where: projectId ? { project_id: projectId } : {},
@@ -447,23 +279,6 @@ const resourceService = {
 // ─── INTERVENTIONS ────────────────────────────────────────────────────────────
 const interventionService = {
   getAll: async (projectId, userRole = null) => {
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name'] });
-      for (const proj of allProjects) {
-        const count = await Intervention.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          await Intervention.create({
-            project_id: proj.id,
-            priority: 'LOW',
-            problem: 'Baseline management intervention placeholder',
-            required_decision: 'None required',
-            status: 'COMPLETED'
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline interventions:', e.message);
-    }
     
     const projectInclude = getProjectInclude(userRole);
     return Intervention.findAll({
@@ -497,24 +312,6 @@ const interventionService = {
 // ─── RECOVERY PLANS ───────────────────────────────────────────────────────────
 const recoveryService = {
   getAll: async (projectId, userRole = null) => {
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name'] });
-      for (const proj of allProjects) {
-        const count = await RecoveryPlan.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          await RecoveryPlan.create({
-            project_id: proj.id,
-            original_gap: 0,
-            recovery_target_gap: 0,
-            current_gap: 0,
-            recovery_status: 'COMPLETED',
-            recovery_action: 'Baseline recovery placeholder',
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline recovery plans:', e.message);
-    }
     return RecoveryPlan.findAll({
       where: projectId ? { project_id: projectId } : {},
       include: [getProjectInclude(userRole)],
@@ -541,22 +338,6 @@ const recoveryService = {
 // ─── FORWARD LOOK ─────────────────────────────────────────────────────────────
 const forwardLookService = {
   getAll: async (projectId, userRole = null) => {
-    try {
-      const allProjects = await Project.findAll({ attributes: ['id', 'project_code', 'project_name'] });
-      for (const proj of allProjects) {
-        const count = await ForwardLook.count({ where: { project_id: proj.id } });
-        if (count === 0) {
-          await ForwardLook.create({
-            project_id: proj.id,
-            period: 'NEXT_30_DAYS',
-            category: 'OTHER',
-            description: 'Baseline forward look placeholder',
-          }).catch(() => {});
-        }
-      }
-    } catch (e) {
-      console.error('Error checking baseline forward look:', e.message);
-    }
     return ForwardLook.findAll({
       where: projectId ? { project_id: projectId } : {},
       include: [getProjectInclude(userRole)],
