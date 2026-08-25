@@ -25,7 +25,10 @@ export default function ProjectFormPage() {
     if (isEdit) {
       projectService.getById(id)
         .then(data => {
-          reset(data);
+          const formattedData = { ...data };
+          if (formattedData.commencement_date) formattedData.commencement_date = formattedData.commencement_date.toString().substring(0, 10);
+          if (formattedData.completion_date) formattedData.completion_date = formattedData.completion_date.toString().substring(0, 10);
+          reset(formattedData);
           setLoading(false);
         })
         .catch(err => {

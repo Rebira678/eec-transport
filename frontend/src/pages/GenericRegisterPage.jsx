@@ -338,7 +338,13 @@ export default function GenericRegisterPage({ registerType }) {
 
   const handleOpenEdit = (item) => {
     setEditItem(item);
-    reset(item);
+    const formattedItem = { ...item };
+    config.fields.forEach(f => {
+      if (f.type === 'date' && formattedItem[f.name]) {
+        formattedItem[f.name] = formattedItem[f.name].toString().substring(0, 10);
+      }
+    });
+    reset(formattedItem);
     onOpen();
   };
 

@@ -9,10 +9,9 @@ const startServer = async () => {
     console.log('Database connection has been established successfully.');
 
     // Sync all models — create tables if they don't exist
-    // Use alter:true only for Postgres (Supabase) where ALTER COLUMN works properly
-    // SQLite doesn't support ALTER for ENUMs and will fail with FK constraints
-    const isPostgres = sequelize.getDialect() === 'postgres';
-    await sequelize.sync(isPostgres ? { alter: true } : {});
+    // IMPORTANT: Do NOT use { alter: true } in production, as Sequelize has known
+    // issues with PostgreSQL ENUMs and may DROP tables, causing catastrophic data loss!
+    await sequelize.sync();
     console.log('Database models synchronized successfully.');
 
     app.listen(config.port, () => {
